@@ -1,0 +1,73 @@
+[project]
+name = "opencapbench"
+version = "1.0.0"
+description = "OpenCapBench: A Benchmark to Bridge Pose Estimation and Biomechanics"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Yoni Gozlan" },
+]
+
+dependencies = [
+    # Core ML/CV Frameworks
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "torchaudio>=2.0.0",
+    
+    # MMPose ecosystem (install via mim after base setup)
+    "openmim>=0.3.0",
+    "mmengine>=0.8.0",
+    
+    # Biomechanics
+    "opensim>=4.4.0",
+    
+    # Scientific Computing
+    "numpy>=1.24.0,<2.0.0",
+    "scipy>=1.10.0",
+    "opencv-python>=4.7.0",
+    "pandas>=2.0.0",
+    
+    # SMPL/Body Models
+    "smplx>=0.1.28",
+    
+    # Data & Utils
+    "pycocotools>=2.0.6",
+    "pyyaml>=6.0",
+    "tqdm>=4.65.0",
+    
+    # Model Download
+    "huggingface-hub>=0.16.0",
+    
+    # Optional: Experiment Tracking
+    "wandb>=0.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.3.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+# Installation Notes:
+# After installing base dependencies with uv, install MMPose ecosystem:
+# 1. uv pip install openmim
+# 2. mim install "mmcv>=2.0.0"
+# 3. mim install "mmdet>=3.0.0"
+# 4. mim install "mmpose>=1.0.0"
+#
+# PyTorch CUDA 12.8 installation:
+# uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
