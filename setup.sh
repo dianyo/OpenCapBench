@@ -92,22 +92,27 @@ else
     echo "Continuing with other dependencies..."
 fi
 
-# Install MMPose ecosystem
+# Install MMPose ecosystem via uv (not mim, which has pkg_resources issues)
 echo ""
 echo -e "${YELLOW}[9/10] Installing MMPose ecosystem (mmcv, mmdet, mmpose)...${NC}"
-echo "This may take several minutes..."
 
-# Install mmcv
-echo "  - Installing mmcv..."
-mim install "mmcv>=2.0.0"
+# Pin setuptools<81 for mim/chumpy compatibility (pkg_resources removed in 81+)
+uv pip install "setuptools<81" pip
 
-# Install mmdet
-echo "  - Installing mmdet..."
-mim install "mmdet>=3.0.0"
+# mmcv must be built from source for cu128 (no pre-built wheels available).
+# This takes ~50 minutes due to CUDA kernel compilation.
+echo "  - Installing mmcv (building from source, may take 30-60 min)..."
+uv pip install mmcv==2.2.0 --no-build-isolation
 
-# Install mmpose
-echo "  - Installing mmpose..."
-mim install "mmpose>=1.0.0"
+# mmdet and mmpose are pure Python, fast install
+echo "  - Installing mmdet and mmpose..."
+uv pip install "mmdet>=3.0.0" "mmpose>=1.0.0" --no-build-isolation
+
+# Patch mmdet version check: mmdet 3.3.0 caps mmcv<2.2.0 but 2.2.0 works fine
+MMDET_INIT="$VIRTUAL_ENV/lib/python3.11/site-packages/mmdet/__init__.py"
+if [ -f "$MMDET_INIT" ]; then
+    sed -i "s/mmcv_maximum_version = '2.2.0'/mmcv_maximum_version = '2.3.0'/" "$MMDET_INIT"
+fi
 
 echo -e "${GREEN}✓ MMPose ecosystem installed${NC}"
 
