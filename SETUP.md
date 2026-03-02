@@ -57,8 +57,11 @@ source dev.env
 # Install PyTorch with CUDA 12.8
 uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 
-# Install base dependencies
+# Install base dependencies (everything except OpenSim)
 uv pip install -e .
+
+# Install OpenSim (hybrid approach - uses conda temporarily)
+./install_opensim_uv.sh
 
 # Install MMPose ecosystem
 uv pip install openmim
@@ -184,6 +187,10 @@ OpenCapBench/
 
 # Or install missing package manually
 uv pip install <package-name>
+
+# For OpenSim specifically:
+source .venv/bin/activate
+./install_opensim_uv.sh
 ```
 
 ### GPU Not Detected

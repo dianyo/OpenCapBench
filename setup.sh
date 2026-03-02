@@ -68,15 +68,33 @@ echo ""
 echo -e "${YELLOW}[6/9] Verifying CUDA availability...${NC}"
 python -c "import torch; print(f'PyTorch version: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}'); print(f'CUDA version: {torch.version.cuda if torch.cuda.is_available() else \"N/A\"}')"
 
-# Install base dependencies from pyproject.toml
+# Install base dependencies from pyproject.toml (excluding opensim)
 echo ""
-echo -e "${YELLOW}[7/9] Installing base dependencies...${NC}"
+echo -e "${YELLOW}[7/10] Installing base dependencies...${NC}"
 uv pip install -e .
 echo -e "${GREEN}✓ Base dependencies installed${NC}"
 
+# Install OpenSim using helper script
+echo ""
+echo -e "${YELLOW}[8/10] Installing OpenSim...${NC}"
+echo "OpenSim is not available via PyPI. Using hybrid approach..."
+echo ""
+
+# Run the opensim installer helper
+if ./install_opensim_uv.sh; then
+    echo -e "${GREEN}✓ OpenSim installed successfully${NC}"
+else
+    echo -e "${YELLOW}⚠ OpenSim installation had issues${NC}"
+    echo "You can try installing manually later:"
+    echo "  source .venv/bin/activate"
+    echo "  ./install_opensim_uv.sh"
+    echo ""
+    echo "Continuing with other dependencies..."
+fi
+
 # Install MMPose ecosystem
 echo ""
-echo -e "${YELLOW}[8/9] Installing MMPose ecosystem (mmcv, mmdet, mmpose)...${NC}"
+echo -e "${YELLOW}[9/10] Installing MMPose ecosystem (mmcv, mmdet, mmpose)...${NC}"
 echo "This may take several minutes..."
 
 # Install mmcv
@@ -95,7 +113,7 @@ echo -e "${GREEN}✓ MMPose ecosystem installed${NC}"
 
 # Run verification test
 echo ""
-echo -e "${YELLOW}[9/9] Running verification tests...${NC}"
+echo -e "${YELLOW}[10/10] Running verification tests...${NC}"
 if [ -f "scripts/test_imports.py" ]; then
     python scripts/test_imports.py
 else
