@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "OpenCapBench: A Benchmark to Bridge Pose Estimation and Biomechanics"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Yoni Gozlan" },
 ]
@@ -50,8 +50,11 @@ dev = [
 # Note: OpenSim is required but not in PyPI
 # Install separately using: ./install_opensim_uv.sh
 
+[tool.setuptools.packages.find]
+include = ["benchmarking*", "synthpose*"]
+
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
