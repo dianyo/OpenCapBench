@@ -5,46 +5,23 @@ import os
 config_global = "local"  # Default changed to "local" for standard setup
 
 config_base_local = {
-    # MMPose Directory - If using system-wide install via pip/uv, leave as empty string
-    # If using cloned fork, set to absolute path: "/path/to/mmpose"
-    "mmposeDirectory": "",  # Leave empty for system-wide mmpose install
-    
+    "mmposeDirectory": "/home/ubuntu/joe/mmpose_fork",
     "OutputBoxDirectory": "OutputBox",
-    
-    # Person Detector Configuration (auto-downloads from URL)
+
+    # Person Detector (auto-downloads from URL)
     "model_config_person": "demo/mmdetection_cfg/faster_rcnn_r50_fpn_coco.py",
     "model_ckpt_person": "https://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth",
-    
-    # Alternative person detector (ConvNeXt - better performance):
-    # "model_config_person": "demo/mmdetection_cfg/configs/convnext/cascade-mask-rcnn_convnext-t-p4-w7_fpn_4conv1fc-giou_amp-ms-crop-3x_coco.py",
-    # "model_ckpt_person": "https://download.openmmlab.com/mmdetection/v2.0/convnext/cascade_mask_rcnn_convnext-t_p4_w7_fpn_giou_4conv1f_fp16_ms-crop_3x_coco/cascade_mask_rcnn_convnext-t_p4_w7_fpn_giou_4conv1f_fp16_ms-crop_3x_coco_20220509_204200-8f07c40b.pth",
-    
-    # Pose Model Configuration
-    # TODO: Update these paths based on your model choice:
-    # Option 1: SynthPose VitPose (recommended for paper results)
-    # Download from: https://huggingface.co/yonigozlan/synthpose-vitpose-base-hf
+
+    # SynthPose HRNet48 — downloaded from stanfordmimi/synthpose-hrnet-48-mmpose
     "model_config_pose": "configs/body_2d_keypoint/topdown_heatmap/infinity/hrnet48/td-hm_hrnet-w48_dark-8xb32-210e_merge_bedlam_infinity_coco_3DPW_eval_rich-384x288_pretrained.py",
-    "model_ckpt_pose": "/home/ubuntu/joe/OpenCapBench/models/synthpose-vitpose-base/pytorch_model.pth",
-    
-    # Option 2: Standard COCO-trained models (for comparison):
-    # "model_config_pose": "configs/body_2d_keypoint/topdown_heatmap/coco/td-hm_hrnet-w48_dark-8xb32-210e_coco-384x288.py",
-    # "model_ckpt_pose": "https://download.openmmlab.com/mmpose/top_down/hrnet/hrnet_w48_coco_384x288_dark-e881a4b6_20210203.pth",
-    
-    # Data Directory - Where you downloaded the OpenCap dataset
+    "model_ckpt_pose": "/home/ubuntu/joe/OpenCapBench/models/synthpose-hrnet-48/hrnet-w48_dark.pth",
+
     "dataDir": "/home/ubuntu/joe/OpenCapBench/data",
-    
-    # Batch sizes (adjust based on your GPU memory)
     "batch_size_det": 4,
     "batch_size_pose": 32,
-    
-    # Scaling configuration
-    "useGTscaling": True,  # Use ground truth scaling from OpenCap data
-    
-    # Marker set: "Anatomical" for SynthPose models, "Coco" for standard COCO models
+    "useGTscaling": True,
     "marker_set": "Anatomical",
-    
-    # Alternative models (advanced usage)
-    "alt_model": None,  # None or "VirtualMarker" or "CLIFF"
+    "alt_model": None,
 }
 
 # Set absolute path for pose model checkpoint
@@ -88,7 +65,7 @@ config_base_windows = {
 
 
 config_base_sherlock = {
-    "mmposeDirectory": "/home/users/yonigoz/RA/mmpose",
+    "mmposeDirectory": "/home/ubuntu/joe/mmpose_fork",
     "OutputBoxDirectory": "OutputBox",
     "model_config_person": "demo/mmdetection_cfg/configs/convnext/cascade-mask-rcnn_convnext-t-p4-w7_fpn_4conv1fc-giou_amp-ms-crop-3x_coco.py",
     "model_ckpt_person": "https://download.openmmlab.com/mmdetection/v2.0/convnext/cascade_mask_rcnn_convnext-t_p4_w7_fpn_giou_4conv1f_fp16_ms-crop_3x_coco/cascade_mask_rcnn_convnext-t_p4_w7_fpn_giou_4conv1f_fp16_ms-crop_3x_coco_20220509_204200-8f07c40b.pth",
